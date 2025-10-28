@@ -1,39 +1,295 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generation Results - Document Generator</title>
+    <title>Generation Results - DocGenius</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --success-color: #4cc9f0;
+            --light-bg: #f8f9fa;
+            --dark-text: #2b2d42;
+            --light-text: #8d99ae;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .success-header {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: bounce 1s ease infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px 12px 0 0 !important;
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: var(--light-text);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 1rem 0.75rem;
+        }
+        
+        .table td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+            border-radius: 8px;
+            margin: 0 3px;
+            border: 1px solid #e9ecef;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .page-link:hover {
+            color: var(--secondary-color);
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-card h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .stats-card small {
+            opacity: 0.9;
+        }
+        
+        .batch-actions {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+        
+        .file-row {
+            transition: background-color 0.2s ease;
+        }
+        
+        .file-row:hover {
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #2b2d42, #1a1b2e);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .progress-container {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+            border-radius: 3px;
+            width: 0%;
+            animation: progress 1.5s ease-in-out forwards;
+        }
+        
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+        
+        @media (max-width: 768px) {
+            .success-header {
+                padding: 1.5rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+            
+            .btn-group .btn {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <strong>📄 Auto Document Generator</strong>
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-magic me-2"></i>DocGenius
             </a>
             <div>
-                <a href="/upload" class="btn btn-outline-light">🔄 Generate More</a>
-                <a href="/" class="btn btn-light">🏠 Home</a>
+                <a href="/upload" class="btn btn-outline-light btn-sm me-2">
+                    <i class="fas fa-plus me-1"></i>New Generation
+                </a>
+                <a href="/" class="btn btn-light btn-sm">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-4">
         <div class="row justify-content-center">
-            <div class="col-lg-12">
+            <div class="col-12">
                 <!-- Success Header -->
-                <div class="text-center mb-5">
-                    <div class="success-icon">✅</div>
-                    <h1 class="text-success">Documents Generated Successfully!</h1>
-                    <p class="lead">{{ file_count }} files generated for {{ document_type|title }}</p>
+                <div class="success-header text-center">
+                    <div class="success-icon">✨</div>
+                    <h1 class="display-5 fw-bold">Documents Generated Successfully!</h1>
+                    <p class="lead mb-4">{{ file_count }} files generated for {{ document_type|title }}</p>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="bg-white text-primary rounded-pill px-3 py-2 d-inline-flex align-items-center">
+                            <i class="fas fa-layer-group me-2"></i>
+                            Page <span id="currentPage" class="fw-bold mx-1">1</span> of 
+                            <span id="totalPages" class="fw-bold mx-1">1</span>
+                            <span class="badge bg-primary ms-2">{{ files|length }} total files</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Animated Progress Bar -->
+                    <div class="progress-container mt-3 mx-auto" style="max-width: 300px;">
+                        <div class="progress-bar"></div>
+                    </div>
                 </div>
 
+                <!-- Flash Messages -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
                             <div class="alert alert-{{ 'danger' if category == 'error' else 'info' }} alert-dismissible fade show">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>
                                 {{ message }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
@@ -41,51 +297,91 @@
                     {% endif %}
                 {% endwith %}
 
-                <!-- Files List -->
-                <div class="card shadow">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">📁 Generated Files</h5>
-                        <span class="badge bg-primary">{{ files|length }} files</span>
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card" style="background: linear-gradient(135deg, #4361ee, #3a0ca3);">
+                            <h4>{{ files|length }}</h4>
+                            <small>Total Files</small>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        {% if files %}
+                    <div class="col-md-3">
+                        <div class="stats-card" style="background: linear-gradient(135deg, #f72585, #b5179e);">
+                            <h4>{{ files|selectattr('format', 'equalto', 'pdf')|list|length }}</h4>
+                            <small>PDF Files</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card" style="background: linear-gradient(135deg, #4cc9f0, #4895ef);">
+                            <h4>{{ files|selectattr('format', 'equalto', 'docx')|list|length }}</h4>
+                            <small>DOCX Files</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card" style="background: linear-gradient(135deg, #7209b7, #560bad);">
+                            <h4 id="currentPageCount">0</h4>
+                            <small>This Page</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files List -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>Generated Documents
+                        </h5>
+                        <div>
+                            <span class="badge bg-primary">{{ files|length }} files</span>
+                            <span class="badge bg-secondary ms-1" id="pageInfo">1-10</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <!-- Table Container -->
                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
                                     <tr>
-                                        <th>Student Name</th>
-                                        <th>Document Type</th>
-                                        <th>Format</th>
-                                        <th>File Name</th>
-                                        <th>Actions</th>
+                                        <th width="25%">Student Name</th>
+                                        <th width="15%">Document Type</th>
+                                        <th width="10%">Format</th>
+                                        <th width="25%">File Name</th>
+                                        <th width="25%">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="resultsTableBody">
                                     {% for file in files %}
-                                    <tr>
-                                        <td class="align-middle">{{ file.name }}</td>
+                                    <tr class="file-row" data-page="{{ ((loop.index - 1) // 10) + 1 }}" style="display: none;">
                                         <td class="align-middle">
-                                            <span class="badge bg-primary">{{ file.type|title }}</span>
+                                            <i class="fas fa-user-graduate me-2 text-primary"></i>
+                                            {{ file.name }}
                                         </td>
                                         <td class="align-middle">
-                                            <span class="badge bg-{{ 'success' if file.format == 'pdf' else 'info' if file.format == 'docx' else 'warning' }}">
+                                            <span class="badge bg-{{ 'primary' if file.type == 'transcript' else 'success' if file.type == 'certificate' else 'info' }}">
+                                                <i class="fas fa-{{ 'graduation-cap' if file.type == 'transcript' else 'award' if file.type == 'certificate' else 'user-graduate' }} me-1"></i>
+                                                {{ file.type|title }}
+                                            </span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="badge bg-{{ 'danger' if file.format == 'pdf' else 'success' if file.format == 'docx' else 'warning' }}">
+                                                <i class="fas fa-{{ 'file-pdf' if file.format == 'pdf' else 'file-word' if file.format == 'docx' else 'file-image' }} me-1"></i>
                                                 {{ file.format|upper }}
                                             </span>
                                         </td>
                                         <td class="align-middle">
-                                            <code class="text-dark">{{ file.filename }}</code>
+                                            <small class="text-muted font-monospace">{{ file.filename }}</small>
                                         </td>
                                         <td class="align-middle">
                                             <div class="btn-group btn-group-sm">
                                                 <a href="{{ url_for('download_file', session_id=session_id, filename=file.filename) }}" 
-                                                   class="btn btn-outline-primary">
-                                                    📥 Download
+                                                   class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-download me-1"></i>Download
                                                 </a>
                                                 {% if file.format in ['pdf', 'png', 'jpg', 'jpeg'] %}
                                                 <a href="{{ url_for('view_file', session_id=session_id, filename=file.filename) }}" 
                                                    target="_blank"
-                                                   class="btn btn-outline-secondary">
-                                                    👁️ View
+                                                   class="btn btn-outline-secondary btn-sm">
+                                                    <i class="fas fa-eye me-1"></i>Preview
                                                 </a>
                                                 {% endif %}
                                             </div>
@@ -95,78 +391,222 @@
                                 </tbody>
                             </table>
                         </div>
-                        {% else %}
-                        <div class="text-center py-4">
-                            <p class="text-muted">No files generated. Please try again.</p>
+
+                        <!-- Pagination Controls -->
+                        {% if files|length > 10 %}
+                        <div class="pagination-container p-3 border-top">
+                            <nav aria-label="Results pagination">
+                                <ul class="pagination mb-0" id="paginationControls">
+                                    <!-- Pagination will be generated by JavaScript -->
+                                </ul>
+                            </nav>
                         </div>
                         {% endif %}
                     </div>
                 </div>
 
                 <!-- Batch Actions -->
-                <div class="card shadow mt-4">
-                    <div class="card-body text-center">
-                        <h5>Quick Actions</h5>
-                        <p class="text-muted">Download individual files or try batch operations</p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            {% if files %}
-                            <a href="{{ url_for('download_file', session_id=session_id, filename=files[0].filename) }}" 
-                               class="btn btn-primary">
-                                📥 Download First File
-                            </a>
-                            {% endif %}
-                            <a href="{{ url_for('batch_download', session_id=session_id) }}" 
-                               class="btn btn-outline-primary">
-                                📦 Try Batch Download
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Next Steps -->
-                <div class="card shadow mt-4">
-                    <div class="card-body">
-                        <h5>What's Next?</h5>
-                        <div class="row text-center">
-                            <div class="col-md-4 mb-2">
-                                <a href="/upload" class="btn btn-outline-primary w-100">
-                                    🔄 Generate More Documents
-                                </a>
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <a href="/" class="btn btn-outline-secondary w-100">
-                                    🏠 Back to Home
-                                </a>
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <button onclick="window.print()" class="btn btn-outline-info w-100">
-                                    🖨️ Print This Page
-                                </button>
-                            </div>
-                        </div>
+                <div class="batch-actions">
+                    <h5 class="mb-3">
+                        <i class="fas fa-bolt me-2 text-warning"></i>Batch Operations
+                    </h5>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        {% if files %}
+                        <a href="{{ url_for('download_file', session_id=session_id, filename=files[0].filename) }}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-download me-1"></i>Download First
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('batch_download', session_id=session_id) }}" 
+                           class="btn btn-success">
+                            <i class="fas fa-archive me-1"></i>Download All as ZIP
+                        </a>
+                        <a href="/upload" class="btn btn-outline-primary">
+                            <i class="fas fa-plus me-1"></i>Create More
+                        </a>
+                        <a href="/" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-1"></i>Back to Home
+                        </a>
+                        <button onclick="window.print()" class="btn btn-outline-info">
+                            <i class="fas fa-print me-1"></i>Print Summary
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+    <!-- Floating Action Button -->
+    <div class="floating-action">
+        <button class="btn btn-primary btn-lg rounded-circle shadow" onclick="scrollToTop()" title="Back to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <footer class="footer">
         <div class="container text-center">
-            <p>&copy; 2024 Auto Document Generator. 
-               <a href="{{ url_for('cleanup', session_id=session_id) }}" class="text-white-50">Clean up files</a>
+            <p class="mb-0">&copy; 2024 DocGenius. 
+               <a href="{{ url_for('cleanup', session_id=session_id) }}" class="text-white-50 text-decoration-none ms-2">
+                   <i class="fas fa-broom me-1"></i>Clean up files
+               </a>
             </p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Auto-download first file after 2 seconds (optional)
-        setTimeout(function() {
-            // {% if files %}
-            // Uncomment the line below if you want auto-download
-            // window.location.href = "{{ url_for('download_file', session_id=session_id, filename=files[0].filename) }}";
-            // {% endif %}
-        }, 2000);
+        document.addEventListener('DOMContentLoaded', function() {
+            const filesPerPage = 10;
+            const allFiles = document.querySelectorAll('.file-row');
+            const totalFiles = allFiles.length;
+            const totalPages = Math.ceil(totalFiles / filesPerPage);
+            
+            // Update page info
+            document.getElementById('totalPages').textContent = totalPages;
+            
+            // Generate pagination controls
+            const paginationContainer = document.getElementById('paginationControls');
+            if (totalPages > 1) {
+                let paginationHTML = '';
+                
+                // Previous button
+                paginationHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="changePage(currentPage - 1)" aria-label="Previous">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                `;
+                
+                // Page numbers
+                const maxVisiblePages = 5;
+                let startPage = 1;
+                let endPage = totalPages;
+                
+                if (totalPages > maxVisiblePages) {
+                    startPage = Math.max(1, currentPage - 2);
+                    endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                    
+                    if (endPage - startPage + 1 < maxVisiblePages) {
+                        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                    }
+                }
+                
+                if (startPage > 1) {
+                    paginationHTML += `
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="changePage(1)">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    `;
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    paginationHTML += `
+                        <li class="page-item ${i === 1 ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                        </li>
+                    `;
+                }
+                
+                if (endPage < totalPages) {
+                    paginationHTML += `
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a>
+                        </li>
+                    `;
+                }
+                
+                // Next button
+                paginationHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="changePage(currentPage + 1)" aria-label="Next">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                `;
+                
+                paginationContainer.innerHTML = paginationHTML;
+            }
+            
+            // Initialize first page
+            let currentPage = 1;
+            window.currentPage = currentPage;
+            showPage(currentPage);
+        });
+
+        function changePage(page) {
+            const totalPages = Math.ceil(document.querySelectorAll('.file-row').length / 10);
+            
+            if (page < 1 || page > totalPages) return;
+            
+            showPage(page);
+            updatePaginationControls(page, totalPages);
+            window.currentPage = page;
+        }
+
+        function showPage(page) {
+            const allFiles = document.querySelectorAll('.file-row');
+            const filesPerPage = 10;
+            const startIndex = (page - 1) * filesPerPage;
+            const endIndex = startIndex + filesPerPage;
+            
+            // Hide all files
+            allFiles.forEach(file => {
+                file.style.display = 'none';
+            });
+            
+            // Show files for current page
+            let visibleCount = 0;
+            allFiles.forEach((file, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    file.style.display = '';
+                    visibleCount++;
+                }
+            });
+            
+            // Update page indicators
+            document.getElementById('currentPage').textContent = page;
+            document.getElementById('currentPageCount').textContent = visibleCount;
+            document.getElementById('pageInfo').textContent = 
+                `${startIndex + 1}-${Math.min(startIndex + filesPerPage, allFiles.length)}`;
+        }
+
+        function updatePaginationControls(currentPage, totalPages) {
+            const pageItems = document.querySelectorAll('.page-item');
+            pageItems.forEach(item => {
+                item.classList.remove('active');
+                const pageLink = item.querySelector('.page-link');
+                if (pageLink && !pageLink.querySelector('i') && pageLink.textContent === currentPage.toString()) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Enable/disable previous/next buttons
+            const prevButton = document.querySelector('.page-item:first-child');
+            const nextButton = document.querySelector('.page-item:last-child');
+            
+            if (currentPage === 1) {
+                prevButton.classList.add('disabled');
+            } else {
+                prevButton.classList.remove('disabled');
+            }
+            
+            if (currentPage === totalPages) {
+                nextButton.classList.add('disabled');
+            } else {
+                nextButton.classList.remove('disabled');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>

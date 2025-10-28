@@ -1,112 +1,173 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Generator - Home</title>
+    <title>Magic Document Generator ✨</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-glass">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <strong>📄 Auto Document Generator</strong>
+            <a class="navbar-brand fw-bold text-white" href="/">
+                <i class="fas fa-magic me-2"></i>DocGenius
             </a>
+            <div class="navbar-nav">
+                <a href="/upload" class="btn btn-magic">
+                    <i class="fas fa-wand-magic-sparkles me-2"></i>Start Creating
+                </a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="hero-section">
+    <section class="hero-section">
         <div class="container">
-            <div class="row align-items-center min-vh-75">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold text-white mb-4">
-                        Generate Documents Automatically
-                    </h1>
-                    <p class="lead text-white mb-4">
-                        Create professional transcripts, certificates, and associate documents 
-                        from Excel data in seconds. Save time and ensure consistency.
-                    </p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                        <a href="{{ url_for('upload') }}" class="btn btn-light btn-lg px-4 me-md-2">
-                            🚀 Start Generating
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <h1 class="hero-title animate-fadeInUp">
+                            Transform Data into Beautiful Documents
+                        </h1>
+                        <p class="hero-subtitle animate-fadeInUp">
+                            Automatically generate professional transcripts, certificates, and documents
+                            with the power of AI and beautiful design
+                        </p>
+                        <div class="animate-fadeInUp" style="animation-delay: 0.4s;">
+                            <a href="/upload" class="btn btn-magic btn-lg me-3">
+                                <i class="fas fa-bolt me-2"></i>Start Generating
+                            </a>
+                            <a href="#features" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-play-circle me-2"></i>See How It Works
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-white display-4 fw-bold mb-3 animate-slideInLeft">Why Choose DocGenius?</h2>
+                <p class="text-light lead animate-slideInRight">Experience the future of document generation</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card animate-fadeInUp">
+                    <div class="feature-icon">🎓</div>
+                    <h4>Smart Transcripts</h4>
+                    <p class="text-muted">Generate professional academic transcripts with automatic grade calculation
+                        and beautiful formatting.</p>
+                    <div class="mt-3">
+                        <span class="badge bg-primary">Auto Grading</span>
+                        <span class="badge bg-success">PDF/DOCX</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">🏅</div>
+                    <h4>Stunning Certificates</h4>
+                    <p class="text-muted">Create beautiful, personalized certificates with centered names and
+                        professional designs.</p>
+                    <div class="mt-3">
+                        <span class="badge bg-warning">PNG Export</span>
+                        <span class="badge bg-info">Customizable</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Lightning Fast</h4>
+                    <p class="text-muted">Generate hundreds of documents in seconds with our optimized processing
+                        engine.</p>
+                    <div class="mt-3">
+                        <span class="badge bg-danger">Fast</span>
+                        <span class="badge bg-dark">Batch Processing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center text-white">
+                <div class="col-md-3 mb-4 animate-slideInLeft">
+                    <div class="display-4 fw-bold">500+</div>
+                    <div class="text-light">Documents Generated</div>
+                </div>
+                <div class="col-md-3 mb-4 animate-slideInLeft" style="animation-delay: 0.1s;">
+                    <div class="display-4 fw-bold">99%</div>
+                    <div class="text-light">Success Rate</div>
+                </div>
+                <div class="col-md-3 mb-4 animate-slideInRight" style="animation-delay: 0.2s;">
+                    <div class="display-4 fw-bold">⚡</div>
+                    <div class="text-light">Lightning Fast</div>
+                </div>
+                <div class="col-md-3 mb-4 animate-slideInRight" style="animation-delay: 0.3s;">
+                    <div class="display-4 fw-bold">🎯</div>
+                    <div class="text-light">Perfect Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <div class="feature-card">
+                        <h3 class="mb-3">Ready to Transform Your Workflow?</h3>
+                        <p class="text-muted mb-4">Join thousands of educators and administrators who save hours every
+                            week</p>
+                        <a href="/upload" class="btn btn-magic btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Launch Generator
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <div class="feature-icon">
-                        📊➡️📄
-                    </div>
-                </div>
             </div>
         </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- Features Section -->
-    <div class="container py-5">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h4>Transcripts</h4>
-                    <p>Generate professional academic transcripts with grades and course information.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">🏅</div>
-                    <h4>Certificates</h4>
-                    <p>Create beautiful completion certificates with centered names and professional design.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">📘</div>
-                    <h4>Associate Documents</h4>
-                    <p>Generate associate degree documents in both DOCX and PDF formats.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-    <!-- How It Works -->
-    <div class="bg-light py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">How It Works</h2>
-            <div class="row text-center">
-                <div class="col-md-3">
-                    <div class="step">1</div>
-                    <h5>Upload Files</h5>
-                    <p>Upload your Excel data and document template</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step">2</div>
-                    <h5>Choose Format</h5>
-                    <p>Select document type and output format</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step">3</div>
-                    <h5>Generate</h5>
-                    <p>System automatically creates all documents</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step">4</div>
-                    <h5>Download</h5>
-                    <p>Download individual files or batch download</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p>&copy; 2025 Auto Document Generator. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        // Add scroll event for FAB visibility
+        window.addEventListener('scroll', function () {
+            const fab = document.querySelector('.fab');
+            if (window.scrollY > 300) {
+                fab.style.opacity = '1';
+            } else {
+                fab.style.opacity = '0';
+            }
+        });
+    </script>
 </body>
+
 </html>

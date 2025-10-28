@@ -23,6 +23,226 @@ os.makedirs(app.config['GENERATED_FOLDER'], exist_ok=True)
 # Store generated files info (in production, use database)
 generated_files_store = {}
 
+# ---------------------- Individual Document Generator ----------------------
+def generate_individual_document(document_type, template_file, output_folder, student_data, file_format="both"):
+    """Generate individual document for a single student"""
+    try:
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+        generated_files = []
+        current_date = datetime.now().strftime("%B %d, %Y")
+        
+        if document_type == 'certificate':
+            # Generate certificate image
+            name = student_data.get('student_name', '').strip()
+            if not name:
+                return False, "Student name is required for certificate generation"
+            
+            # Try to load font
+            try:
+                font_name = ImageFont.truetype("arialbd.ttf", 100)
+            except:
+                font_name = ImageFont.load_default()
+
+            certificate = Image.open(template_file)
+            draw = ImageDraw.Draw(certificate)
+
+            # Center the name text
+            bbox = draw.textbbox((0, 0), name, font=font_name)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+            x = (certificate.width - text_width) / 2
+            y = 600  # Adjust vertically to fit your design
+
+            draw.text((x, y), name, fill="orange", font=font_name)
+
+            output_filename = f"certificate_{name.replace(' ', '_')}_{uuid.uuid4().hex[:8]}.png"
+            output_path = os.path.join(output_folder, output_filename)
+            certificate.save(output_path)
+            
+            generated_files.append({
+                'name': name,
+                'filename': output_filename,
+                'type': 'certificate',
+                'format': 'png',
+                'path': output_path
+            })
+
+        elif document_type == 'transcript':
+            # Generate transcript document
+            doc = DocxTemplate(template_file)
+            
+            # Use provided names or split the student name
+            first_name = student_data.get('first_name', '')
+            last_name = student_data.get('last_name', '')
+            student_name = student_data.get('student_name', '')
+            
+            if not first_name and student_name:
+                # Split student name if first/last names not provided
+                name_parts = student_name.split(' ', 1)
+                first_name = name_parts[0]
+                last_name = name_parts[1] if len(name_parts) > 1 else ''
+            
+            # Map student data to template variables
+            context = {
+                "student_id": student_data.get('student_id', ''),
+                "first_name": first_name,
+                "last_name": last_name,
+                "logic": student_data.get('logic', ''),
+                "l_g": student_data.get('l_g', ''),
+                "bcum": student_data.get('bcum', ''),
+                "bc_g": student_data.get('bc_g', ''),
+                "design": student_data.get('design', ''),
+                "d_g": student_data.get('d_g', ''),
+                "p1": student_data.get('p1', ''),
+                "p1_g": student_data.get('p1_g', ''),
+                "e1": student_data.get('e1', ''),
+                "e1_g": student_data.get('e1_g', ''),
+                "wd": student_data.get('wd', ''),
+                "wd_g": student_data.get('wd_g', ''),
+                "algo": student_data.get('algo', ''),
+                "al_g": student_data.get('al_g', ''),
+                "p2": student_data.get('p2', ''),
+                "p2_g": student_data.get('p2_g', ''),
+                "e2": student_data.get('e2', ''),
+                "e2_g": student_data.get('e2_g', ''),
+                "sd": student_data.get('sd', ''),
+                "sd_g": student_data.get('sd_g', ''),
+                "js": student_data.get('js', ''),
+                "js_g": student_data.get('js_g', ''),
+                "php": student_data.get('php', ''),
+                "ph_g": student_data.get('ph_g', ''),
+                "db": student_data.get('db', ''),
+                "db_g": student_data.get('db_g', ''),
+                "vc1": student_data.get('vc1', ''),
+                "v1_g": student_data.get('v1_g', ''),
+                "node": student_data.get('node', ''),
+                "no_g": student_data.get('no_g', ''),
+                "e3": student_data.get('e3', ''),
+                "e3_g": student_data.get('e3_g', ''),
+                "p3": student_data.get('p3', ''),
+                "p3_g": student_data.get('p3_g', ''),
+                "oop": student_data.get('oop', ''),
+                "op_g": student_data.get('op_g', ''),
+                "lar": student_data.get('lar', ''),
+                "lar_g": student_data.get('lar_g', ''),
+                "vue": student_data.get('vue', ''),
+                "vu_g": student_data.get('vu_g', ''),
+                "vc2": student_data.get('vc2', ''),
+                "v2_g": student_data.get('v2_g', ''),
+                "e4": student_data.get('e4', ''),
+                "e4_g": student_data.get('e4_g', ''),
+                "p4": student_data.get('p4', ''),
+                "p4_g": student_data.get('p4_g', ''),
+                "int": student_data.get('int', ''),
+                "in_g": student_data.get('in_g', ''),
+                'cur_date': current_date
+            }
+            
+            doc.render(context)
+            filename_safe = f"{first_name}_{last_name}".replace(' ', '_').replace('/', '_') if first_name or last_name else f"student_{uuid.uuid4().hex[:8]}"
+            
+            if file_format in ["doc", "both"]:
+                doc_filename = f"transcript_{filename_safe}_{uuid.uuid4().hex[:8]}.docx"
+                doc_path = os.path.join(output_folder, doc_filename)
+                doc.save(doc_path)
+                generated_files.append({
+                    'name': f"{first_name} {last_name}".strip() or student_name,
+                    'filename': doc_filename,
+                    'type': 'transcript',
+                    'format': 'docx',
+                    'path': doc_path
+                })
+
+            if file_format in ["pdf", "both"]:
+                if file_format == "pdf":
+                    doc_filename = f"transcript_{filename_safe}_{uuid.uuid4().hex[:8]}.docx"
+                    doc_path = os.path.join(output_folder, doc_filename)
+                    doc.save(doc_path)
+                
+                pdf_filename = f"transcript_{filename_safe}_{uuid.uuid4().hex[:8]}.pdf"
+                pdf_path = os.path.join(output_folder, pdf_filename)
+                convert(doc_path, pdf_path)
+                
+                generated_files.append({
+                    'name': f"{first_name} {last_name}".strip() or student_name,
+                    'filename': pdf_filename,
+                    'type': 'transcript',
+                    'format': 'pdf',
+                    'path': pdf_path
+                })
+                
+                if file_format == "pdf":
+                    os.remove(doc_path)
+
+        elif document_type == 'associate':
+            # Generate associate document
+            doc = DocxTemplate(template_file)
+            
+            student_name = student_data.get('student_name', '')
+            name_kh = student_data.get('name_kh', '')
+            
+            context = {
+                'name_kh': name_kh,
+                'g1': student_data.get('g1', ''),
+                'id_kh': student_data.get('student_id', ''),
+                'name_e': student_name,
+                'g2': student_data.get('g2', ''),
+                'id_e': student_data.get('student_id', ''),
+                'dob_kh': student_data.get('dob_kh', ''),
+                'pro_kh': student_data.get('pro_kh', ''),
+                'dob_e': student_data.get('dob_e', ''),
+                'pro_e': student_data.get('pro_e', ''),
+                'ed_kh': student_data.get('ed_kh', ''),
+                'ed_e': student_data.get('ed_e', ''),
+                'cur_date': current_date
+            }
+            
+            doc.render(context)
+            filename_safe = student_name.replace(' ', '_').replace('/', '_') if student_name else f"student_{uuid.uuid4().hex[:8]}"
+            
+            if file_format in ["doc", "both"]:
+                doc_filename = f"associate_{filename_safe}_{uuid.uuid4().hex[:8]}.docx"
+                doc_path = os.path.join(output_folder, doc_filename)
+                doc.save(doc_path)
+                generated_files.append({
+                    'name': student_name,
+                    'filename': doc_filename,
+                    'type': 'associate',
+                    'format': 'docx',
+                    'path': doc_path
+                })
+
+            if file_format in ["pdf", "both"]:
+                if file_format == "pdf":
+                    doc_filename = f"associate_{filename_safe}_{uuid.uuid4().hex[:8]}.docx"
+                    doc_path = os.path.join(output_folder, doc_filename)
+                    doc.save(doc_path)
+                
+                pdf_filename = f"associate_{filename_safe}_{uuid.uuid4().hex[:8]}.pdf"
+                pdf_path = os.path.join(output_folder, pdf_filename)
+                convert(doc_path, pdf_path)
+                
+                generated_files.append({
+                    'name': student_name,
+                    'filename': pdf_filename,
+                    'type': 'associate',
+                    'format': 'pdf',
+                    'path': pdf_path
+                })
+                
+                if file_format == "pdf":
+                    os.remove(doc_path)
+
+        else:
+            return False, f"Unsupported document type: {document_type}"
+
+        return True, generated_files
+
+    except Exception as e:
+        return False, str(e)
+
 # ---------------------- Certificate Generator ----------------------
 def generate_certificates(excel_file, template_file, output_folder, font_path="arialbd.ttf", font_size=100):
     """Generate certificates with perfectly centered names."""
@@ -271,78 +491,132 @@ def upload():
     if request.method == 'POST':
         document_type = request.form.get('document_type')
         file_format = request.form.get('file_format', 'both')
+        data_method = request.form.get('data_method', 'excel')
         
-        # Check if files were uploaded
-        if 'excel_file' not in request.files or 'template_file' not in request.files:
-            flash('Please upload both Excel and template files', 'error')
+        # Check if template file was uploaded
+        if 'template_file' not in request.files:
+            flash('Please upload a template file', 'error')
             return redirect(request.url)
         
-        excel_file = request.files['excel_file']
         template_file = request.files['template_file']
         
-        if excel_file.filename == '' or template_file.filename == '':
-            flash('Please select both files', 'error')
+        if template_file.filename == '':
+            flash('Please select a template file', 'error')
             return redirect(request.url)
         
-        # Validate file types
-        if not (excel_file.filename.endswith('.xlsx') or excel_file.filename.endswith('.xls')):
-            flash('Please upload a valid Excel file (.xlsx or .xls)', 'error')
-            return redirect(request.url)
-        
-        # Save uploaded files
-        excel_filename = f"{uuid.uuid4()}_{excel_file.filename}"
+        # Save template file
         template_filename = f"{uuid.uuid4()}_{template_file.filename}"
-        
-        excel_path = os.path.join(app.config['UPLOAD_FOLDER'], excel_filename)
         template_path = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
-        
-        excel_file.save(excel_path)
         template_file.save(template_path)
         
-        # Generate documents based on type
-        try:
-            generated_files = []
-            if document_type == 'certificate':
-                if not template_file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-                    flash('Certificate generation requires a PNG or JPG template file', 'error')
-                    return redirect(request.url)
-                success, result = generate_certificates(
-                    excel_path, 
-                    template_path, 
-                    os.path.join(app.config['GENERATED_FOLDER'], 'Certificates')
-                )
-                generated_files = result
-            elif document_type == 'transcript':
-                if not template_file.filename.lower().endswith('.docx'):
-                    flash('Transcript generation requires a DOCX template file', 'error')
-                    return redirect(request.url)
-                success, result = generate_transcripts(excel_path, template_path, file_format)
-                generated_files = result
-            elif document_type == 'associate':
-                if not template_file.filename.lower().endswith('.docx'):
-                    flash('Associate document generation requires a DOCX template file', 'error')
-                    return redirect(request.url)
-                success, result = generate_associate_documents(excel_path, template_path, file_format)
-                generated_files = result
-            else:
-                flash('Invalid document type', 'error')
+        generated_files = []
+        
+        if data_method == 'excel':
+            # Excel file method
+            if 'excel_file' not in request.files:
+                flash('Please upload an Excel file', 'error')
                 return redirect(request.url)
             
-            if success:
-                # Store files info in session
-                session_id = str(uuid.uuid4())
-                generated_files_store[session_id] = generated_files
+            excel_file = request.files['excel_file']
+            
+            if excel_file.filename == '':
+                flash('Please select an Excel file', 'error')
+                return redirect(request.url)
+            
+            # Validate file types
+            if not (excel_file.filename.endswith('.xlsx') or excel_file.filename.endswith('.xls')):
+                flash('Please upload a valid Excel file (.xlsx or .xls)', 'error')
+                return redirect(request.url)
+            
+            # Save Excel file
+            excel_filename = f"{uuid.uuid4()}_{excel_file.filename}"
+            excel_path = os.path.join(app.config['UPLOAD_FOLDER'], excel_filename)
+            excel_file.save(excel_path)
+            
+            # Generate documents based on type
+            try:
+                if document_type == 'certificate':
+                    if not template_file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+                        flash('Certificate generation requires a PNG or JPG template file', 'error')
+                        return redirect(request.url)
+                    success, result = generate_certificates(
+                        excel_path, 
+                        template_path, 
+                        os.path.join(app.config['GENERATED_FOLDER'], 'Certificates')
+                    )
+                    generated_files = result
+                elif document_type == 'transcript':
+                    if not template_file.filename.lower().endswith('.docx'):
+                        flash('Transcript generation requires a DOCX template file', 'error')
+                        return redirect(request.url)
+                    success, result = generate_transcripts(excel_path, template_path, file_format)
+                    generated_files = result
+                elif document_type == 'associate':
+                    if not template_file.filename.lower().endswith('.docx'):
+                        flash('Associate document generation requires a DOCX template file', 'error')
+                        return redirect(request.url)
+                    success, result = generate_associate_documents(excel_path, template_path, file_format)
+                    generated_files = result
+                else:
+                    flash('Invalid document type', 'error')
+                    return redirect(request.url)
                 
-                return redirect(url_for('results', 
-                                      session_id=session_id,
-                                      document_type=document_type,
-                                      file_count=len(generated_files)))
-            else:
-                flash(f'Error generating documents: {result}', 'error')
+                if not success:
+                    flash(f'Error generating documents: {result}', 'error')
+                    return redirect(request.url)
+                    
+            except Exception as e:
+                flash(f'Error processing files: {str(e)}', 'error')
                 return redirect(request.url)
                 
-        except Exception as e:
-            flash(f'Error processing files: {str(e)}', 'error')
+        else:
+            # Manual input method
+            student_name = request.form.get('student_name', '').strip()
+            if not student_name:
+                flash('Please enter student name', 'error')
+                return redirect(request.url)
+            
+            # Prepare student data
+            student_data = {
+                'student_name': student_name,
+                'student_id': request.form.get('student_id', ''),
+                'first_name': request.form.get('first_name', ''),
+                'last_name': request.form.get('last_name', ''),
+                'name_kh': request.form.get('name_kh', ''),
+            }
+            
+            try:
+                # Generate individual document
+                output_folder = os.path.join(app.config['GENERATED_FOLDER'], 'Individual_Documents')
+                success, result = generate_individual_document(
+                    document_type, 
+                    template_path, 
+                    output_folder, 
+                    student_data, 
+                    file_format
+                )
+                
+                if success:
+                    generated_files = result
+                else:
+                    flash(f'Error generating document: {result}', 'error')
+                    return redirect(request.url)
+                    
+            except Exception as e:
+                flash(f'Error processing files: {str(e)}', 'error')
+                return redirect(request.url)
+        
+        # Store files info in session and redirect to results
+        if generated_files:
+            session_id = str(uuid.uuid4())
+            generated_files_store[session_id] = generated_files
+            
+            return redirect(url_for('results', 
+                                  session_id=session_id,
+                                  document_type=document_type,
+                                  file_count=len(generated_files)))
+        else:
+            flash('No documents were generated', 'error')
             return redirect(request.url)
     
     return render_template('upload.html')

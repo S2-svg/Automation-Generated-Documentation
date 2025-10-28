@@ -115,13 +115,38 @@
                                 </div>
                             </div>
 
-                            <!-- File Upload Areas -->
+                            <!-- Data Input Method -->
                             <div class="form-glass">
+                                <label class="form-label fw-bold text-dark mb-3">
+                                    <i class="fas fa-database me-2"></i>How would you like to provide student data?
+                                </label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <input type="radio" class="btn-check" name="data_method" value="excel" id="excelMethod" checked>
+                                        <label class="btn btn-outline-success w-100 h-100 p-3" for="excelMethod">
+                                            <i class="fas fa-file-excel fa-2x mb-2"></i><br>
+                                            Excel File<br>
+                                            <small class="text-muted">Multiple Students</small>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="radio" class="btn-check" name="data_method" value="manual" id="manualMethod">
+                                        <label class="btn btn-outline-warning w-100 h-100 p-3" for="manualMethod">
+                                            <i class="fas fa-keyboard fa-2x mb-2"></i><br>
+                                            Manual Input<br>
+                                            <small class="text-muted">Single Student</small>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Excel File Upload (Default) -->
+                            <div class="form-glass" id="excelSection">
                                 <label class="form-label fw-bold text-dark mb-3">
                                     <i class="fas fa-file-excel me-2"></i>Excel Data File
                                 </label>
                                 <div class="file-upload-area" id="excelUploadArea">
-                                    <input type="file" class="d-none" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
+                                    <input type="file" class="d-none" id="excel_file" name="excel_file" accept=".xlsx,.xls">
                                     <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
                                     <h5>Drop your Excel file here</h5>
                                     <p class="text-muted">or click to browse</p>
@@ -130,6 +155,33 @@
                                 <div id="excelFileName" class="mt-2 text-success fw-bold"></div>
                             </div>
 
+                            <!-- Manual Name Input (Hidden by Default) -->
+                            <div class="form-glass" id="manualSection" style="display: none;">
+                                <label class="form-label fw-bold text-dark mb-3">
+                                    <i class="fas fa-user-edit me-2"></i>Enter Student Information
+                                </label>
+                                <div class="manual-input-area p-4 border rounded">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Student Name *</label>
+                                        <input type="text" class="form-control" id="student_name" name="student_name" 
+                                               placeholder="Enter full student name">
+                                    </div>
+                                    <div class="mb-3" id="studentIdField" style="display: none;">
+                                        <label class="form-label fw-semibold">Student ID</label>
+                                        <input type="text" class="form-control" id="student_id" name="student_id" 
+                                               placeholder="Enter student ID">
+                                    </div>
+                                    <div class="mb-3" id="additionalFields" style="display: none;">
+                                        <!-- Additional fields will be shown based on document type -->
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the student information manually for single document generation
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Template File Upload -->
                             <div class="form-glass">
                                 <label class="form-label fw-bold text-dark mb-3">
                                     <i class="fas fa-file-image me-2"></i>Document Template
@@ -174,6 +226,7 @@
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Ensure your Excel columns match the template requirements</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use high-quality templates for best results</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Batch process multiple documents at once</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use manual input for quick single document generation</li>
                     </ul>
                 </div>
             </div>
@@ -191,6 +244,69 @@
         const generateBtn = document.getElementById('generateBtn');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const form = document.getElementById('uploadForm');
+
+        // Data method toggle
+        const excelMethod = document.getElementById('excelMethod');
+        const manualMethod = document.getElementById('manualMethod');
+        const excelSection = document.getElementById('excelSection');
+        const manualSection = document.getElementById('manualSection');
+        const studentIdField = document.getElementById('studentIdField');
+        const additionalFields = document.getElementById('additionalFields');
+
+        // Toggle between Excel and Manual input
+        excelMethod.addEventListener('change', toggleDataMethod);
+        manualMethod.addEventListener('change', toggleDataMethod);
+
+        function toggleDataMethod() {
+            if (excelMethod.checked) {
+                excelSection.style.display = 'block';
+                manualSection.style.display = 'none';
+                excelInput.required = true;
+            } else {
+                excelSection.style.display = 'none';
+                manualSection.style.display = 'block';
+                excelInput.required = false;
+            }
+        }
+
+        // Show/hide additional fields based on document type
+        document.querySelectorAll('input[name="document_type"]').forEach(radio => {
+            radio.addEventListener('change', updateAdditionalFields);
+        });
+
+        function updateAdditionalFields() {
+            const documentType = document.querySelector('input[name="document_type"]:checked');
+            if (!documentType) return;
+
+            studentIdField.style.display = 'block';
+            additionalFields.innerHTML = '';
+
+            if (documentType.value === 'transcript') {
+                additionalFields.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">First Name</label>
+                            <input type="text" class="form-control" name="first_name" placeholder="First name">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" placeholder="Last name">
+                        </div>
+                    </div>
+                `;
+                additionalFields.style.display = 'block';
+            } else if (documentType.value === 'associate') {
+                additionalFields.innerHTML = `
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Name in Khmer</label>
+                        <input type="text" class="form-control" name="name_kh" placeholder="Name in Khmer">
+                    </div>
+                `;
+                additionalFields.style.display = 'block';
+            } else {
+                additionalFields.style.display = 'none';
+            }
+        }
 
         // Excel file handling
         excelArea.addEventListener('click', () => excelInput.click());
@@ -235,6 +351,16 @@
                 e.preventDefault();
                 alert('Please select a document type!');
                 return;
+            }
+
+            // Validate manual input
+            if (manualMethod.checked) {
+                const studentName = document.getElementById('student_name').value.trim();
+                if (!studentName) {
+                    e.preventDefault();
+                    alert('Please enter student name!');
+                    return;
+                }
             }
             
             loadingOverlay.style.display = 'flex';

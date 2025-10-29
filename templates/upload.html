@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <!-- Animated Background -->
     <div class="animated-bg">
@@ -43,15 +44,17 @@
 
                     <div class="upload-body">
                         {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% if messages %}
-                                {% for category, message in messages %}
-                                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show animate-slideInDown">
-                                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
-                                        {{ message }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
+                        {% if messages %}
+                        {% for category, message in messages %}
+                        <div
+                            class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show animate-slideInDown">
+                            <i
+                                class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
                         {% endwith %}
 
                         <form method="POST" enctype="multipart/form-data" id="uploadForm">
@@ -62,7 +65,8 @@
                                 </label>
                                 <div class="row g-3">
                                     <div class="col-md-4">
-                                        <input type="radio" class="btn-check" name="document_type" value="transcript" id="transcript" required>
+                                        <input type="radio" class="btn-check" name="document_type" value="transcript"
+                                            id="transcript" required>
                                         <label class="btn btn-outline-primary w-100 h-100 p-3" for="transcript">
                                             <i class="fas fa-graduation-cap fa-2x mb-2"></i><br>
                                             Transcript<br>
@@ -70,7 +74,8 @@
                                         </label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="radio" class="btn-check" name="document_type" value="certificate" id="certificate">
+                                        <input type="radio" class="btn-check" name="document_type" value="certificate"
+                                            id="certificate">
                                         <label class="btn btn-outline-success w-100 h-100 p-3" for="certificate">
                                             <i class="fas fa-award fa-2x mb-2"></i><br>
                                             Certificate<br>
@@ -78,7 +83,8 @@
                                         </label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="radio" class="btn-check" name="document_type" value="associate" id="associate">
+                                        <input type="radio" class="btn-check" name="document_type" value="associate"
+                                            id="associate">
                                         <label class="btn btn-outline-info w-100 h-100 p-3" for="associate">
                                             <i class="fas fa-user-graduate fa-2x mb-2"></i><br>
                                             Associate<br>
@@ -95,19 +101,22 @@
                                 </label>
                                 <div class="row g-2">
                                     <div class="col-4">
-                                        <input type="radio" class="btn-check" name="file_format" value="doc" id="formatDoc">
+                                        <input type="radio" class="btn-check" name="file_format" value="doc"
+                                            id="formatDoc">
                                         <label class="btn btn-outline-info w-100" for="formatDoc">
                                             <i class="fas fa-file-word me-1"></i>DOCX
                                         </label>
                                     </div>
                                     <div class="col-4">
-                                        <input type="radio" class="btn-check" name="file_format" value="pdf" id="formatPdf">
+                                        <input type="radio" class="btn-check" name="file_format" value="pdf"
+                                            id="formatPdf">
                                         <label class="btn btn-outline-danger w-100" for="formatPdf">
                                             <i class="fas fa-file-pdf me-1"></i>PDF
                                         </label>
                                     </div>
                                     <div class="col-4">
-                                        <input type="radio" class="btn-check" name="file_format" value="both" id="formatBoth" checked>
+                                        <input type="radio" class="btn-check" name="file_format" value="both"
+                                            id="formatBoth" checked>
                                         <label class="btn btn-outline-primary w-100" for="formatBoth">
                                             <i class="fas fa-copy me-1"></i>Both
                                         </label>
@@ -122,7 +131,8 @@
                                 </label>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <input type="radio" class="btn-check" name="data_method" value="excel" id="excelMethod" checked>
+                                        <input type="radio" class="btn-check" name="data_method" value="excel"
+                                            id="excelMethod" checked>
                                         <label class="btn btn-outline-success w-100 h-100 p-3" for="excelMethod">
                                             <i class="fas fa-file-excel fa-2x mb-2"></i><br>
                                             Excel File<br>
@@ -130,7 +140,8 @@
                                         </label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="radio" class="btn-check" name="data_method" value="manual" id="manualMethod">
+                                        <input type="radio" class="btn-check" name="data_method" value="manual"
+                                            id="manualMethod">
                                         <label class="btn btn-outline-warning w-100 h-100 p-3" for="manualMethod">
                                             <i class="fas fa-keyboard fa-2x mb-2"></i><br>
                                             Manual Input<br>
@@ -146,7 +157,8 @@
                                     <i class="fas fa-file-excel me-2"></i>Excel Data File
                                 </label>
                                 <div class="file-upload-area" id="excelUploadArea">
-                                    <input type="file" class="d-none" id="excel_file" name="excel_file" accept=".xlsx,.xls">
+                                    <input type="file" class="d-none" id="excel_file" name="excel_file"
+                                        accept=".xlsx,.xls">
                                     <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
                                     <h5>Drop your Excel file here</h5>
                                     <p class="text-muted">or click to browse</p>
@@ -163,13 +175,13 @@
                                 <div class="manual-input-area p-4 border rounded">
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Student Name *</label>
-                                        <input type="text" class="form-control" id="student_name" name="student_name" 
-                                               placeholder="Enter full student name">
+                                        <input type="text" class="form-control" id="student_name" name="student_name"
+                                            placeholder="Enter full student name">
                                     </div>
                                     <div class="mb-3" id="studentIdField" style="display: none;">
                                         <label class="form-label fw-semibold">Student ID</label>
-                                        <input type="text" class="form-control" id="student_id" name="student_id" 
-                                               placeholder="Enter student ID">
+                                        <input type="text" class="form-control" id="student_id" name="student_id"
+                                            placeholder="Enter student ID">
                                     </div>
                                     <div class="mb-3" id="additionalFields" style="display: none;">
                                         <!-- Additional fields will be shown based on document type -->
@@ -187,7 +199,8 @@
                                     <i class="fas fa-file-image me-2"></i>Document Template
                                 </label>
                                 <div class="file-upload-area" id="templateUploadArea">
-                                    <input type="file" class="d-none" id="template_file" name="template_file" accept=".docx,.png,.jpg,.jpeg" required>
+                                    <input type="file" class="d-none" id="template_file" name="template_file"
+                                        accept=".docx,.png,.jpg,.jpeg" required>
                                     <i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
                                     <h5>Drop your template here</h5>
                                     <p class="text-muted">or click to browse</p>
@@ -223,10 +236,14 @@
                 <div class="feature-card mt-4 animate-fadeInUp" style="animation-delay: 0.3s;">
                     <h5><i class="fas fa-lightbulb me-2 text-warning"></i>Pro Tips</h5>
                     <ul class="list-unstyled text-muted">
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Ensure your Excel columns match the template requirements</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use high-quality templates for best results</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Batch process multiple documents at once</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use manual input for quick single document generation</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Ensure your Excel columns
+                            match the template requirements</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use high-quality templates
+                            for best results</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Batch process multiple
+                            documents at once</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Use manual input for quick
+                            single document generation</li>
                     </ul>
                 </div>
             </div>
@@ -345,7 +362,7 @@
         }
 
         // Form submission
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             const documentType = document.querySelector('input[name="document_type"]:checked');
             if (!documentType) {
                 e.preventDefault();
@@ -362,14 +379,14 @@
                     return;
                 }
             }
-            
+
             loadingOverlay.style.display = 'flex';
             generateBtn.disabled = true;
             generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating...';
         });
 
         // Add some interactive animations
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.feature-card');
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
@@ -377,4 +394,5 @@
         });
     </script>
 </body>
+
 </html>

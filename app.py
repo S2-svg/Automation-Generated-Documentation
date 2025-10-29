@@ -41,7 +41,7 @@ def generate_individual_document(document_type, template_file, output_folder, st
             
             # Try to load font
             try:
-                font_name = ImageFont.truetype("arialbd.ttf", 100)
+                font_name = ImageFont.truetype("arialbd.ttf", 80)
             except:
                 font_name = ImageFont.load_default()
 
@@ -244,7 +244,7 @@ def generate_individual_document(document_type, template_file, output_folder, st
         return False, str(e)
 
 # ---------------------- Certificate Generator ----------------------
-def generate_certificates(excel_file, template_file, output_folder, font_path="arialbd.ttf", font_size=100):
+def generate_certificates(excel_file, template_file, output_folder, font_path="arialbd.ttf", font_size=80):
     """Generate certificates with perfectly centered names."""
     try:
         data = pd.read_excel(excel_file)

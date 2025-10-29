@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,18 +16,18 @@
             --dark-text: #2b2d42;
             --light-text: #8d99ae;
         }
-        
+
         body {
             background-color: #f5f7fb;
             color: var(--dark-text);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .navbar {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
         .success-header {
             background: linear-gradient(135deg, #4cc9f0, #4361ee);
             color: white;
@@ -38,7 +38,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .success-header::before {
             content: "";
             position: absolute;
@@ -49,19 +49,26 @@
             background: rgba(255, 255, 255, 0.1);
             transform: rotate(30deg);
         }
-        
+
         .success-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
             display: inline-block;
             animation: bounce 1s ease infinite;
         }
-        
+
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
-        
+
         .card {
             border: none;
             border-radius: 12px;
@@ -69,12 +76,12 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 1.5rem;
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-        
+
         .card-header {
             background-color: white;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -82,7 +89,7 @@
             padding: 1.25rem 1.5rem;
             font-weight: 600;
         }
-        
+
         .table th {
             border-top: none;
             font-weight: 600;
@@ -92,57 +99,57 @@
             letter-spacing: 0.5px;
             padding: 1rem 0.75rem;
         }
-        
+
         .table td {
             padding: 1rem 0.75rem;
             vertical-align: middle;
             border-color: rgba(0, 0, 0, 0.05);
         }
-        
+
         .badge {
             font-weight: 500;
             padding: 0.5rem 0.75rem;
             border-radius: 6px;
         }
-        
+
         .btn {
             border-radius: 8px;
             font-weight: 500;
             padding: 0.5rem 1rem;
             transition: all 0.3s ease;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
-        
+
         .btn-outline-primary {
             color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .btn-outline-primary:hover {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .pagination-container {
             display: flex;
             justify-content: center;
             margin: 2rem 0;
         }
-        
+
         .page-item.active .page-link {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .page-link {
             color: var(--primary-color);
             border-radius: 8px;
@@ -150,13 +157,13 @@
             border: 1px solid #e9ecef;
             padding: 0.5rem 0.75rem;
         }
-        
+
         .page-link:hover {
             color: var(--secondary-color);
             background-color: #f8f9fa;
             border-color: #dee2e6;
         }
-        
+
         .stats-card {
             text-align: center;
             padding: 1.5rem;
@@ -164,16 +171,16 @@
             color: white;
             margin-bottom: 1.5rem;
         }
-        
+
         .stats-card h4 {
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
-        
+
         .stats-card small {
             opacity: 0.9;
         }
-        
+
         .batch-actions {
             background-color: white;
             border-radius: 12px;
@@ -181,22 +188,22 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             margin-top: 2rem;
         }
-        
+
         .file-row {
             transition: background-color 0.2s ease;
         }
-        
+
         .file-row:hover {
             background-color: rgba(67, 97, 238, 0.03);
         }
-        
+
         .footer {
             background: linear-gradient(135deg, #2b2d42, #1a1b2e);
             color: white;
             padding: 2rem 0;
             margin-top: 3rem;
         }
-        
+
         .progress-container {
             height: 6px;
             background-color: #e9ecef;
@@ -204,7 +211,7 @@
             overflow: hidden;
             margin-top: 1rem;
         }
-        
+
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--success-color), var(--primary-color));
@@ -212,28 +219,33 @@
             width: 0%;
             animation: progress 1.5s ease-in-out forwards;
         }
-        
+
         @keyframes progress {
-            from { width: 0%; }
-            to { width: 100%; }
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
         }
-        
+
         .floating-action {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
             z-index: 100;
         }
-        
+
         @media (max-width: 768px) {
             .success-header {
                 padding: 1.5rem;
             }
-            
+
             .table-responsive {
                 font-size: 0.85rem;
             }
-            
+
             .btn-group .btn {
                 padding: 0.25rem 0.5rem;
                 font-size: 0.8rem;
@@ -241,6 +253,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -267,17 +280,17 @@
                     <div class="success-icon">✨</div>
                     <h1 class="display-5 fw-bold">Documents Generated Successfully!</h1>
                     <p class="lead mb-4">{{ file_count }} files generated for {{ document_type|title }}</p>
-                    
+
                     <!-- Progress Indicator -->
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="bg-white text-primary rounded-pill px-3 py-2 d-inline-flex align-items-center">
                             <i class="fas fa-layer-group me-2"></i>
-                            Page <span id="currentPage" class="fw-bold mx-1">1</span> of 
+                            Page <span id="currentPage" class="fw-bold mx-1">1</span> of
                             <span id="totalPages" class="fw-bold mx-1">1</span>
                             <span class="badge bg-primary ms-2">{{ files|length }} total files</span>
                         </div>
                     </div>
-                    
+
                     <!-- Animated Progress Bar -->
                     <div class="progress-container mt-3 mx-auto" style="max-width: 300px;">
                         <div class="progress-bar"></div>
@@ -286,15 +299,15 @@
 
                 <!-- Flash Messages -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ 'danger' if category == 'error' else 'info' }} alert-dismissible fade show">
-                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'info' }} alert-dismissible fade show">
+                    <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
                 {% endwith %}
 
                 <!-- Stats Cards -->
@@ -351,20 +364,25 @@
                                 </thead>
                                 <tbody id="resultsTableBody">
                                     {% for file in files %}
-                                    <tr class="file-row" data-page="{{ ((loop.index - 1) // 10) + 1 }}" style="display: none;">
+                                    <tr class="file-row" data-page="{{ ((loop.index - 1) // 10) + 1 }}"
+                                        style="display: none;">
                                         <td class="align-middle">
                                             <i class="fas fa-user-graduate me-2 text-primary"></i>
                                             {{ file.name }}
                                         </td>
                                         <td class="align-middle">
-                                            <span class="badge bg-{{ 'primary' if file.type == 'transcript' else 'success' if file.type == 'certificate' else 'info' }}">
-                                                <i class="fas fa-{{ 'graduation-cap' if file.type == 'transcript' else 'award' if file.type == 'certificate' else 'user-graduate' }} me-1"></i>
+                                            <span
+                                                class="badge bg-{{ 'primary' if file.type == 'transcript' else 'success' if file.type == 'certificate' else 'info' }}">
+                                                <i
+                                                    class="fas fa-{{ 'graduation-cap' if file.type == 'transcript' else 'award' if file.type == 'certificate' else 'user-graduate' }} me-1"></i>
                                                 {{ file.type|title }}
                                             </span>
                                         </td>
                                         <td class="align-middle">
-                                            <span class="badge bg-{{ 'danger' if file.format == 'pdf' else 'success' if file.format == 'docx' else 'warning' }}">
-                                                <i class="fas fa-{{ 'file-pdf' if file.format == 'pdf' else 'file-word' if file.format == 'docx' else 'file-image' }} me-1"></i>
+                                            <span
+                                                class="badge bg-{{ 'danger' if file.format == 'pdf' else 'success' if file.format == 'docx' else 'warning' }}">
+                                                <i
+                                                    class="fas fa-{{ 'file-pdf' if file.format == 'pdf' else 'file-word' if file.format == 'docx' else 'file-image' }} me-1"></i>
                                                 {{ file.format|upper }}
                                             </span>
                                         </td>
@@ -373,14 +391,13 @@
                                         </td>
                                         <td class="align-middle">
                                             <div class="btn-group btn-group-sm">
-                                                <a href="{{ url_for('download_file', session_id=session_id, filename=file.filename) }}" 
-                                                   class="btn btn-outline-primary btn-sm">
+                                                <a href="{{ url_for('download_file', session_id=session_id, filename=file.filename) }}"
+                                                    class="btn btn-outline-primary btn-sm">
                                                     <i class="fas fa-download me-1"></i>Download
                                                 </a>
                                                 {% if file.format in ['pdf', 'png', 'jpg', 'jpeg'] %}
-                                                <a href="{{ url_for('view_file', session_id=session_id, filename=file.filename) }}" 
-                                                   target="_blank"
-                                                   class="btn btn-outline-secondary btn-sm">
+                                                <a href="{{ url_for('view_file', session_id=session_id, filename=file.filename) }}"
+                                                    target="_blank" class="btn btn-outline-secondary btn-sm">
                                                     <i class="fas fa-eye me-1"></i>Preview
                                                 </a>
                                                 {% endif %}
@@ -412,13 +429,12 @@
                     </h5>
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
                         {% if files %}
-                        <a href="{{ url_for('download_file', session_id=session_id, filename=files[0].filename) }}" 
-                           class="btn btn-primary">
+                        <a href="{{ url_for('download_file', session_id=session_id, filename=files[0].filename) }}"
+                            class="btn btn-primary">
                             <i class="fas fa-download me-1"></i>Download First
                         </a>
                         {% endif %}
-                        <a href="{{ url_for('batch_download', session_id=session_id) }}" 
-                           class="btn btn-success">
+                        <a href="{{ url_for('batch_download', session_id=session_id) }}" class="btn btn-success">
                             <i class="fas fa-archive me-1"></i>Download All as ZIP
                         </a>
                         <a href="/upload" class="btn btn-outline-primary">
@@ -445,30 +461,31 @@
 
     <footer class="footer">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2025 DocGenius. 
-               <a href="{{ url_for('cleanup', session_id=session_id) }}" class="text-white-50 text-decoration-none ms-2">
-                   <i class="fas fa-broom me-1"></i>Clean up files
-               </a>
+            <p class="mb-0">&copy; 2025 DocGenius.
+                <a href="{{ url_for('cleanup', session_id=session_id) }}"
+                    class="text-white-50 text-decoration-none ms-2">
+                    <i class="fas fa-broom me-1"></i>Clean up files
+                </a>
             </p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const filesPerPage = 10;
             const allFiles = document.querySelectorAll('.file-row');
             const totalFiles = allFiles.length;
             const totalPages = Math.ceil(totalFiles / filesPerPage);
-            
+
             // Update page info
             document.getElementById('totalPages').textContent = totalPages;
-            
+
             // Generate pagination controls
             const paginationContainer = document.getElementById('paginationControls');
             if (totalPages > 1) {
                 let paginationHTML = '';
-                
+
                 // Previous button
                 paginationHTML += `
                     <li class="page-item">
@@ -477,21 +494,21 @@
                         </a>
                     </li>
                 `;
-                
+
                 // Page numbers
                 const maxVisiblePages = 5;
                 let startPage = 1;
                 let endPage = totalPages;
-                
+
                 if (totalPages > maxVisiblePages) {
                     startPage = Math.max(1, currentPage - 2);
                     endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-                    
+
                     if (endPage - startPage + 1 < maxVisiblePages) {
                         startPage = Math.max(1, endPage - maxVisiblePages + 1);
                     }
                 }
-                
+
                 if (startPage > 1) {
                     paginationHTML += `
                         <li class="page-item">
@@ -502,7 +519,7 @@
                         </li>
                     `;
                 }
-                
+
                 for (let i = startPage; i <= endPage; i++) {
                     paginationHTML += `
                         <li class="page-item ${i === 1 ? 'active' : ''}">
@@ -510,7 +527,7 @@
                         </li>
                     `;
                 }
-                
+
                 if (endPage < totalPages) {
                     paginationHTML += `
                         <li class="page-item disabled">
@@ -521,7 +538,7 @@
                         </li>
                     `;
                 }
-                
+
                 // Next button
                 paginationHTML += `
                     <li class="page-item">
@@ -530,10 +547,10 @@
                         </a>
                     </li>
                 `;
-                
+
                 paginationContainer.innerHTML = paginationHTML;
             }
-            
+
             // Initialize first page
             let currentPage = 1;
             window.currentPage = currentPage;
@@ -542,9 +559,9 @@
 
         function changePage(page) {
             const totalPages = Math.ceil(document.querySelectorAll('.file-row').length / 10);
-            
+
             if (page < 1 || page > totalPages) return;
-            
+
             showPage(page);
             updatePaginationControls(page, totalPages);
             window.currentPage = page;
@@ -555,12 +572,12 @@
             const filesPerPage = 10;
             const startIndex = (page - 1) * filesPerPage;
             const endIndex = startIndex + filesPerPage;
-            
+
             // Hide all files
             allFiles.forEach(file => {
                 file.style.display = 'none';
             });
-            
+
             // Show files for current page
             let visibleCount = 0;
             allFiles.forEach((file, index) => {
@@ -569,11 +586,11 @@
                     visibleCount++;
                 }
             });
-            
+
             // Update page indicators
             document.getElementById('currentPage').textContent = page;
             document.getElementById('currentPageCount').textContent = visibleCount;
-            document.getElementById('pageInfo').textContent = 
+            document.getElementById('pageInfo').textContent =
                 `${startIndex + 1}-${Math.min(startIndex + filesPerPage, allFiles.length)}`;
         }
 
@@ -586,17 +603,17 @@
                     item.classList.add('active');
                 }
             });
-            
+
             // Enable/disable previous/next buttons
             const prevButton = document.querySelector('.page-item:first-child');
             const nextButton = document.querySelector('.page-item:last-child');
-            
+
             if (currentPage === 1) {
                 prevButton.classList.add('disabled');
             } else {
                 prevButton.classList.remove('disabled');
             }
-            
+
             if (currentPage === totalPages) {
                 nextButton.classList.add('disabled');
             } else {
@@ -609,4 +626,5 @@
         }
     </script>
 </body>
+
 </html>
